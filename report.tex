@@ -1,0 +1,53 @@
+%This file contains the tex code of my project report for my Data Structure course.
+%Author: 章凌豪 / Zhang Linghao <zlhdnc1994@gmail.com>
+
+\documentclass[12pt]{article}
+\usepackage[top=1.10in, bottom=0.75in, left=1.35in, right=1.35in]{geometry}
+\linespread{1.2}
+\usepackage{ctex}
+\usepackage[colorlinks, citecolor=green, linkcolor=blue, menucolor=red, CJKbookmarks=true]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{titling}
+\usepackage{indentfirst}
+\usepackage[linesnumbered]{algorithm2e}
+\SetKw{kwNew}{\hspace{0.4em}new\hspace{0.4em}}
+\SetKw{kwAnd}{\hspace{0.4em}and\hspace{0.4em}}
+\SetKw{kwIn}{\hspace{0.4em}in\hspace{0.4em}}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{bibentry}
+\usepackage{natbib}
+
+\iffalse
+\AtBeginDocument{
+\begin{CJK*}{GBK}{SimSun}
+\CJKindent
+\sloppy\CJKspace
+\CJKtilde
+}
+\AtEndDocument{\end{CJK*}}
+\fi
+
+\begin{document}
+
+\pagestyle{fancy}
+\lhead{\textbf{{\thetitle}}}
+\rhead{\textbf{\nouppercase{\firstleftmark}}}
+\cfoot{\thepage}
+
+\title{\textbf{用DTBM进行路由表的查找和维护}}
+\author{章凌豪\\13307130225}
+\date{\today}
+\maketitle
+
+\tableofcontents
+\clearpage
+
+\include{assignment}
+\include{algorithm}
+\include{detail}
+\include{performance}
+\include{reference}
+
+\end{document}

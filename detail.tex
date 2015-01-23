@@ -1,0 +1,35 @@
+%This file contains the tex code of my project report for my Data Structure course.
+%Author: 章凌豪 / Zhang Linghao <zlhdnc1994@gmail.com>
+
+\section{实现细节}
+
+\subsection{合理利用位运算}
+
+DTBM是一个基于Bitmap的数据结构，所以我们可以使用一些位运算的技巧来提高程序的性能。主要有以下几点：
+\begin{itemize}
+\item 若要判断$IBM$的第$pos$位是否为$1$，只要看$IBM \& (1 << (pos)) = 1$是否成立即可。
+\item 同样，在将前缀插入到$IBM$的第$pos$位或从$IBM$中删除第$pos$位的前缀时，简单地使用$IBM \&= \sim(1 << pos)$或$IBM \|= (1 << pos)$即可。
+\item 由于算法中会频繁用到$P.bits(x)$，可以在读入数据后将$P$的二进制表示的每$S$位所对应的十进制数存入$bits[]$中，之后可以方便地由$P.bits(x) = bits[idx] >> (S - x)$来得到需要的值，其中$idx$是一个在对$P$移位时用于记录当前移到了第几个长为$S$的块的变量。
+\item 对于下一跳端口，我们可以用一个\textbf{unsigned}类型来储存它。每8位可以储存一个\textbf{char}，输出时，用$nxt\_hop \& (hop\_t)(unsigned char)(-1)$将除最低8位以外的位都遮盖掉，并且每输出一个\textbf{char}就将$nxt\_hop$右移8位。本问题中由于端口最多只有两个字母，所以使用\textbf{unsigned short}来储存即可。
+\end{itemize}
+
+\subsection{选择合适的步长}
+
+步长$S$的选择是一个取舍的过程。$S$取得越大，树的高度就越小，各项操作就完成得越快，但与此同时空间占用也成倍增长。反之亦然。\\
+\indent
+在实现时，$S = 5$是一个不错的选择。这是因为$S = 5$对应的$IBM$位数$2^{2^{S}}=2^{32}$正好能用一个\textbf{unsigned long}存下。若令$S = 6$，虽能将树的高度再减少一层，但这就需要用\textbf{unsigned long long}来储存$IBM$，而众所周知\textbf{long long}要慢上许多。实际尝试之后也发现$S = 6$时性能与$S = 5$时相比并没有显著提升，还多占用了空间。\\
+\indent
+让$S = 5$还有另一个好处。在实际中/24的路由前缀是最常见的，而长为$24$的前缀正好能够落在第五层的结点，这使大部分查询都能有不错的性能表现。\\
+
+\subsection{内存管理}
+
+一般来讲，在实现像DTBM这样的动态数据结构时，应当使用一些内存管理的技巧。比如一次申请大块内存空间比分多次申请小块内存空间要来得快，所以我们可以在程序开始时直接申请一大块内存空间，在创建结点时即可直接使用这些分配好的内存空间。然而由于本问题中数据规模并不大，程序也并不是真正地持续运行在一台路由器上，所以在尝试以后发现并没有必要使用这些技巧。\\
+\indent
+现在假设我们要解决的是一个实际的工程问题，那么有这样一些技巧可以考虑使用：
+\begin{itemize}
+\item 维护一条可用结点链，创建结点时直接返回一个空结点供使用，删除结点时将数据清空后加到链上。
+\item 如果内存足够，可以事先分配好所有结点的空间，并使用惰性操作(lazy operations)，比如删除时不真正删除而是给结点打上删除标记等。
+\item 通过alignment或是cache coloring之类的策略来使缓存得到充分利用，从而加快查询速度。
+\end{itemize}
+
+\clearpage

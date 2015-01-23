@@ -1,0 +1,52 @@
+%This file contains the tex code of my project report for my Data Structure course.
+%Author: 章凌豪 / Zhang Linghao <zlhdnc1994@gmail.com>
+
+\section{性能分析}
+
+\subsection{测试环境}
+
+\begin{itemize}
+\item \textbf{CPU:} Core i7-3615QM @ 2.30Ghz
+\item \textbf{Memory:} DDR3 4GB @ 798.1Mhz
+\item \textbf{System:} Windows 7 SP1
+\item \textbf{Complier:} GCC 4.6.3
+\item \textbf{Complier Parameter:} gcc -lm -O2
+\end{itemize}
+
+\subsection{测试结果}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{数据} & \textbf{总耗时} & \textbf{读入耗时} & \textbf{N} & \textbf{结点数} & \textbf{操作分布} \\ \hline
+\textbf{RIB1/oper1} & 1.776s & 0.953s & 530893 & 373469 & 80\%查找/10\%插入/10\%删除 \\ \hline
+\textbf{RIB1/oper2} & 1.758s & 0.966s & 530893 & 373469 & 60\%查找/20\%插入/20\%删除 \\ \hline
+\textbf{RIB2/oper3} & 1.768s & 0.958s & 554528 & 151548 & 80\%查找/10\%插入/10\%删除 \\ \hline
+\textbf{RIB2/oper4} & 1.563s & 0.943s & 554528 & 151548 & 40\%查找/30\%插入/30\%删除 \\ \hline
+\end{tabular}
+\caption{各组数据测试结果}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{数据} & \textbf{查询} & \textbf{插入} & \textbf{删除} \\ \hline
+\textbf{RIB1} & 217ns & 301ns & 400ns \\ \hline
+\textbf{RIB2} & 399ns & 281ns & 466ns \\ \hline
+\end{tabular}
+\caption{各项操作平均耗时}
+\end{table}
+
+\subsection{数据说明与分析}
+
+\begin{itemize}
+\item 表1是使用\textbf{clock()}函数计时得到的。读入耗时包括对输入进行格式处理所花的时间。
+\item 表2是使用\textbf{gprof}分析得到的。插入操作包括对已有的表项进行修改的情况。
+\item 由于单次操作耗时过短，各种测时和分析工具都会不可避免地积累一定的误差。所以数值上比较接近的数据之间的相对关系意义并不是太大，但还是可以看出大体情况。
+\item 从大体上来讲，读入和预处理占去了一半的耗时(Windows下读入比较慢，且读入耗时与硬盘速度也有很大关系)，剩下的一半时间由载入RIB和处理操作以约$1:2$的比例分别占去，这个比例也与$N$和$M$的比例相符。
+\item 由表2知查询、插入、删除三项操作耗时相差不大，与2.5节中的分析较为符合。
+\end{itemize}
+
+\clearpage
